@@ -1,0 +1,47 @@
+::1 - - [03/Dec/2009:20:22:41 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [03/Dec/2009:20:23:51 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 71
+192.168.1.4 - - [03/Dec/2009:20:23:51 -0800] "GET /hackermusic.mp3 HTTP/1.0" 200 568592 "-" "WinampMPEG/5.56, Ultravox/2.1" 13
+::1 - - [03/Dec/2009:22:11:50 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 1
+::1 - - [03/Dec/2009:22:16:27 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [03/Dec/2009:22:16:42 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 293
+192.168.1.4 - - [03/Dec/2009:22:16:42 -0800] "GET /hackermusic.mp3 HTTP/1.0" 200 10953041 "-" "WinampMPEG/5.56, Ultravox/2.1" 273
+::1 - - [04/Dec/2009:02:13:39 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:02:13:56 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 17
+::1 - - [04/Dec/2009:02:14:40 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:02:14:58 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:02:15:02 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 5
+::1 - - [04/Dec/2009:02:15:27 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:02:15:32 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 5
+::1 - - [04/Dec/2009:02:15:58 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:02:16:01 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 4
+::1 - - [04/Dec/2009:02:22:51 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:02:27:17 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:02:27:21 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 271
+192.168.1.4 - - [04/Dec/2009:02:27:21 -0800] "GET /hackermusic.mp3 HTTP/1.0" 200 10181593 "-" "WinampMPEG/5.56, Ultravox/2.1" 253
+::1 - - [04/Dec/2009:02:28:56 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:02:33:23 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 1
+::1 - - [04/Dec/2009:02:33:29 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 273
+192.168.1.4 - - [04/Dec/2009:02:33:29 -0800] "GET /hackermusic.mp3 HTTP/1.0" 200 10348203 "-" "WinampMPEG/5.56, Ultravox/2.1" 260
+::1 - - [04/Dec/2009:11:51:11 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:11:52:40 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 1
+::1 - - [04/Dec/2009:11:56:14 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:11:56:31 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 232
+::1 - - [04/Dec/2009:11:56:31 -0800] "GET /hackermusic.mp3 HTTP/1.1" 200 7618033 "-" "iTunes/9.0.2 (Macintosh; Intel Mac OS X 10.5.8) AppleWebKit/531.21.8" 189
+::1 - - [04/Dec/2009:11:58:35 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:11:58:42 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 7
+::1 - - [04/Dec/2009:11:59:21 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:11:59:23 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 2
+::1 - - [04/Dec/2009:11:59:36 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 1
+::1 - - [04/Dec/2009:11:59:38 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 3
+::1 - - [04/Dec/2009:11:59:56 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:12:00:07 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 11
+::1 - - [04/Dec/2009:12:00:21 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:12:00:37 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 1
+::1 - - [04/Dec/2009:12:00:52 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 16
+::1 - - [04/Dec/2009:12:00:53 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:12:01:03 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 11
+::1 - - [04/Dec/2009:12:01:04 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:12:01:21 -0800] "SOURCE /hackermusic.mp3 HTTP/1.0" 200 19 "-" "libshout/2.2.2" 17
+::1 - - [04/Dec/2009:12:01:21 -0800] "GET /hackermusic.mp3 HTTP/1.1" 200 289975 "-" "iTunes/9.0.2 (Macintosh; Intel Mac OS X 10.5.8) AppleWebKit/531.21.8" 6
+::1 - - [04/Dec/2009:12:01:26 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0
+::1 - - [04/Dec/2009:12:04:58 -0800] "GET /admin/metadata HTTP/1.0" 200 177 "-" "libshout/2.2.2" 0

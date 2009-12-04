@@ -1,0 +1,11 @@
+!!!
+%html
+  %head
+    %title Hacker Music
+    %link{:rel => 'stylesheet', :type => 'text/css', :href => '/style/hm.css'}
+    %script{:src => '/script/jquery-1.3.2.js'}
+    %script{:src => '/script/hm.js'}
+  %body
+    - if(!@notice.nil?)
+      %h2=@notice
+    =yield

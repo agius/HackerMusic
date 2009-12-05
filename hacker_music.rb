@@ -3,13 +3,16 @@ require 'sinatra'
 require 'sequel'
 require 'digest/sha1'
 require 'haml'
+require 'shout'
 
-$DB = Sequel.sqlite('hacker_music.db')
+$CONFIG = YAML.load_file('config.yaml')
+$DB = Sequel.sqlite($CONFIG[:database][:file_name])
 set :sessions, true
 
 before do
   @user = session[:id] if session[:id]
   @notice = session[:notice]
+  @current_song = $DB[:plays].join(:songs, :id => :song_id).order(:played_at.desc).first
 end
 
 get '/search' do
@@ -19,16 +22,20 @@ get '/search' do
 end
 
 get '/vote/:id' do |id|
+  if not @user
+    session[:notice] = 'You must be logged in to vote!'
+    redirect '/'
+  end
   @songs = $DB[:songs]
   @song = @songs[:id => params[:id]]
   
   @votes = $DB[:votes]
   @yourvote = $DB[:votes].filter(:user_id => @user).join(:songs, :id => :song_id).first
   if @yourvote
-    session[:notice] = 'You already voted for: ' + @yourvote[:title] + ' by ' + @yourvote[:artist] + '<a href="/cancel">Cancel</a>'
+    session[:notice] = 'You already voted for: ' + @yourvote[:title] + ' by ' + @yourvote[:artist] + ' | <a href="/cancel">Clear My Vote</a>'
     redirect '/'
   end
-  vote_id = @votes.insert(:song_id => @song[:id], :user_id => @user) if not @song.nil? and not @yourvote
+  vote_id = @votes.insert(:song_id => @song[:id], :user_id => @user, :voted_at => Time.now) if not @song.nil? and not @yourvote
   @vote = @votes[:id => vote_id]
   session[:notice] = 'You voted for: ' + @song[:title] + ' by ' + @song[:artist]
   redirect '/'
@@ -80,6 +87,6 @@ end
 
 get '/' do
   @songs = $DB[:songs]
-  @votes = $DB[:votes].group(:song_id).join(:songs, :id => :song_id).select(:title, :artist, :COUNT.sql_function(:song_id).as(:cnt)).order(:cnt.desc)
+  @votes = $DB[:votes].group(:song_id).join(:songs, :id => :song_id).select(:title, :artist, :COUNT.sql_function(:song_id).as(:cnt)).order(:cnt.desc, :voted_at.asc)
   haml :index
 end

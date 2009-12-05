@@ -3,8 +3,9 @@ require 'sequel'
 require 'sqlite3'
 require 'tagfile/tagfile'
 
-DATABASE = 'hacker_music.db'
-BASE_DIR = '/Users/andrewevans/Music'
+@config = YAML.load_file('config.yaml')
+@db_file = @config[:database][:file_name]
+@music_dir = @config[:database][:music_dir]
 
 class HM_Indexer
 
@@ -18,7 +19,7 @@ class HM_Indexer
         next if not d =~ /\.mp3$/
         tag = TagFile::File.new(path)
         item = {:filename => path}
-        item[:title] = tag.title or ''
+        item[:title] = tag.title or d
         item[:artist] = tag.artist or ''
         item[:album] = tag.album or ''
         item[:year] = tag.year or ''
@@ -42,6 +43,6 @@ class HM_Indexer
   
 end
 
-indexer = HM_Indexer.new(DATABASE)
-indexer.scan(BASE_DIR)
+indexer = HM_Indexer.new(@db_file)
+indexer.scan(@music_dir)
 puts 'Complete'

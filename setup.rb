@@ -2,8 +2,12 @@ require 'rubygems'
 require 'sequel'
 require 'digest/sha1'
 
+@config = YAML.load_file('config.yaml')
+@db = @config[:database]
+@users = @config[:users]
+
 # Create DB / table
-DB = Sequel.sqlite('hacker_music.db')
+DB = Sequel.sqlite(@db[:file_name])
 DB.run 'DROP TABLE IF EXISTS songs'
 
 DB.create_table :songs do
@@ -24,6 +28,7 @@ DB.create_table :votes do
   primary_key :id
   foreign_key :song_id, :songs
   foreign_key :user_id, :users
+  Time :voted_at
 end
 
 DB.run 'DROP TABLE IF EXISTS users'
@@ -35,8 +40,14 @@ DB.create_table :users do
   String :salt
 end
 
-DB[:users].insert(:name => 'andrew', :salt => 'default', :password_hash => Digest::SHA1.hexdigest('noodledefault'))
-DB[:users].insert(:name => 'ben', :salt => 'default', :password_hash => Digest::SHA1.hexdigest('noodledefault'))
-DB[:users].insert(:name => 'mike', :salt => 'default', :password_hash => Digest::SHA1.hexdigest('noodledefault'))
-DB[:users].insert(:name => 'torsten', :salt => 'default', :password_hash => Digest::SHA1.hexdigest('noodledefault'))
-DB[:users].insert(:name => 'chas', :salt => 'default', :password_hash => Digest::SHA1.hexdigest('noodledefault'))
+@users[:names].each do |name|
+  DB[:users].insert(:name => name, :salt => @users[:default_salt], :password_hash => Digest::SHA1.hexdigest(@users[:default_pass] + @users[:default_salt]))
+end
+
+DB.run 'DROP TABLE IF EXISTS plays'
+
+DB.create_table :plays do
+  primary_key :id
+  foreign_key :song_id
+  Time :played_at
+end

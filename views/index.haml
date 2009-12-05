@@ -16,6 +16,9 @@
   %form{:id => 'search'}
     %input{:type => 'text', :name => 'q', :id => 'q', :size => '50'}
     %input{:type => 'submit', :name=>'go', :value => 'Search', :id => 'searchbutton'}
+    
+- if(@current_song)
+  %h3= "Now Playing: #{@current_song[:title]} by #{@current_song[:artist]}"
 
 .right
   %h2 Upcoming:

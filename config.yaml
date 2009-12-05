@@ -1,0 +1,37 @@
+#config.yaml
+:shout_station:
+  :host: localhost
+  :port: 8000
+  :mount: 'hackermusic.mp3'
+  :user: source
+  :pass: hackme
+  :name: 'Hacker Music'
+  :description: 'A streaming station controlled by the votes of its users.'
+  :genre: 'Awesome'
+
+:database:
+  :music_dir: '/Users/andrewevans/Music'
+  :file_name: 'hacker_music.db'
+
+:users:
+  :default_salt: default
+  :default_pass: noodle
+  :names: [
+    andrew,
+    ben,
+    mike,
+    torsten,
+    chas,
+    danielle,
+    marlene,
+    heesun,
+    rebeca,
+    dian,
+    sean,
+    kirill,
+    bob,
+    sumon,
+    estee,
+    amy,
+    justin
+  ]

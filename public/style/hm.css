@@ -1,4 +1,7 @@
 body{font-family: Verdana, Arial, sans-serif;}
 h1{font: 48px courier, monospace;}
-div.left{width: 50%;}
+div.main{width: 50%;}
 div.right{float:right; margin-right:10%; width:30%;}
+ul.song_list{list-style-type:none; list-style-position:outside; margin: 0; padding: 0;}
+.song_list li{margin: 1em; margin-left: 0;}
+.tag_cloud{width: 50%;}

@@ -9,22 +9,27 @@ $CONFIG = YAML.load_file('config.yaml')
 $DB = Sequel.sqlite($CONFIG[:database][:file_name])
 set :sessions, true
 
+helpers do
+  include Rack::Utils
+  alias_method :url, :escape
+end
+
 before do
   @user = session[:id] if session[:id]
   @notice = session[:notice]
   @current_song = $DB[:plays].join(:songs, :id => :song_id).order(:played_at.desc).first
+  @upcoming = $DB[:votes].group(:song_id).join(:songs, :id => :song_id).select(:title, :artist, :COUNT.sql_function(:song_id).as(:cnt)).order(:cnt.desc, :voted_at.asc)
 end
 
 get '/search' do
   @songs = $DB[:songs].grep([:title, :artist, :filename, :genre, :album], "%#{params[:q]}%")
-  #session[:notice] = @songs.sql
-  haml :search, :layout => !request.xhr?
+  haml :song_list, :layout => !request.xhr?
 end
 
 get '/vote/:id' do |id|
   if not @user
     session[:notice] = 'You must be logged in to vote!'
-    redirect '/'
+    redirect back
   end
   @songs = $DB[:songs]
   @song = @songs[:id => params[:id]]
@@ -33,12 +38,12 @@ get '/vote/:id' do |id|
   @yourvote = $DB[:votes].filter(:user_id => @user).join(:songs, :id => :song_id).first
   if @yourvote
     session[:notice] = 'You already voted for: ' + @yourvote[:title] + ' by ' + @yourvote[:artist] + ' | <a href="/cancel">Clear My Vote</a>'
-    redirect '/'
+    redirect back
   end
   vote_id = @votes.insert(:song_id => @song[:id], :user_id => @user, :voted_at => Time.now) if not @song.nil? and not @yourvote
   @vote = @votes[:id => vote_id]
   session[:notice] = 'You voted for: ' + @song[:title] + ' by ' + @song[:artist]
-  redirect '/'
+  redirect back
 end
 
 post '/login' do
@@ -46,7 +51,7 @@ post '/login' do
   @person = @people.first
   if @person.nil?
     session[:notice] = 'Wrong name / password.'
-    redirect '/'
+    redirect back
   end
   
   password_hash = Digest::SHA1.hexdigest(params[:password] + @person[:salt])
@@ -58,12 +63,12 @@ post '/login' do
     session[:notice] = 'Wrong name / password.'
   end
   
-  redirect '/'
+  redirect back
 end
 
 get '/logout' do
   session[:id] = nil
-  redirect '/'
+  redirect back
 end
 
 get '/change' do
@@ -82,11 +87,71 @@ end
 get '/cancel' do
   $DB[:votes].filter(:user_id => @user).delete
   session[:notice] = 'Your votes have been cleared.'
-  redirect '/'
+  redirect back
+end
+
+get '/title' do
+  haml :browse_by_title
+end
+
+get '/title/:letter' do
+  @songs = $DB[:songs].grep([:title], "#{params[:letter]}%")
+  haml :browse_by_title
+end
+
+get '/artist' do
+  haml :browse_by_artist
+end
+
+get '/artist/:letter' do
+  @songs = $DB[:songs].grep([:artist], "#{params[:letter]}%")
+  haml :browse_by_artist
+end
+
+get '/album' do
+  haml :browse_by_album
+end
+
+get '/album/:letter' do
+  @songs = $DB[:songs].grep([:album], "#{params[:letter]}%")
+  haml :browse_by_album
+end
+
+get '/genre' do
+  @tags = $DB[:songs].select(:COUNT.sql_function(:id).as(:cnt), :genre).group_by(:genre)
+  # Required for tag_cloud partial
+  @max = @tags.order(:cnt.desc).first[:cnt].to_i
+  @min = @tags.order(:cnt.asc).first[:cnt].to_i
+  @base_url = '/genre'
+  @field = :genre
+  @count = :cnt
+  haml :browse_by_genre
+end
+
+get %r{/genre/(.*)} do |g|
+  genre = unescape g
+  @songs = $DB[:songs].grep([:genre], "#{g}%")
+  haml :browse_by_genre
+end
+
+get '/year' do
+  @tags = $DB[:songs].select(:COUNT.sql_function(:id).as(:cnt), :year).group_by(:year)
+  # required for tag_cloud partial
+  @max = @tags.order(:cnt.desc).first[:cnt].to_i
+  @min = @tags.order(:cnt.asc).first[:cnt].to_i
+  @base_url = '/year'
+  @field = :year
+  @count = :cnt
+  haml :browse_by_year
+end
+
+get %r{/year/(.*)} do |y|
+  genre = unescape y
+  @songs = $DB[:songs].grep([:year], "#{y}%")
+  haml :browse_by_year
 end
 
 get '/' do
-  @songs = $DB[:songs]
-  @votes = $DB[:votes].group(:song_id).join(:songs, :id => :song_id).select(:title, :artist, :COUNT.sql_function(:song_id).as(:cnt)).order(:cnt.desc, :voted_at.asc)
+  @songs = $DB[:plays].join(:songs, :id => :song_id).group(:song_id).order(:played_at.desc).limit(10)
   haml :index
 end

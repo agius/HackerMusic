@@ -1,0 +1,7 @@
+%ul.song_list
+  - @songs.each do |song|
+    %li
+      %a{:href => "/vote/#{song[:id]}"}= song[:title]
+      %br
+      %small= song[:artist] + ' - ' + song[:year] + ' - ' + song[:album]
+  

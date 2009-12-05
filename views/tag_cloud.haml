@@ -1,0 +1,7 @@
+- maxPercent = 400
+- minPercent = 80
+.tag_cloud
+  - @tags.each do |t|
+    - size = minPercent + ((@max - (@max - (t[@count].to_i - @min)) ) * (maxPercent - minPercent) / (@max - @min))
+    - link = @base_url + '/' + url(t[@field])
+    = "<a href='#{link}' style='font-size: #{size}%'>#{t[@field]}</a> "

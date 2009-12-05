@@ -1,0 +1,5 @@
+%h2 Browsing By Artist
+- @url = '/artist'
+= haml :alphabet_list, :layout => false
+- if @songs
+  = haml :song_list, :layout => false

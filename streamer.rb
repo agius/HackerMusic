@@ -28,14 +28,14 @@ s.connect
 
 loop do
   songs = DB[:votes].select(:song_id, :filename, :title, :artist, :genre, :album, :year, :COUNT.sql_function(:song_id)).join(:songs, :id => :song_id).group(:song_id).order(:COUNT.sql_function(:song_id).desc, :voted_at.asc)
-  songs = DB[:songs].order(:RANDOM.sql_function()) if songs.empty?
+  songs = DB[:songs].select(:id.as(:song_id), :filename, :title, :artist, :album, :genre, :year).order(:RANDOM.sql_function()) if songs.empty?
   song = songs.first
   
   votes = DB[:votes]
   votes.filter(:song_id => song[:song_id]).delete if not votes.empty?
   
   plays = DB[:plays]
-  plays.insert(:song_id => song[:id], :played_at => Time.now)
+  plays.insert(:song_id => song[:song_id], :played_at => Time.now)
   
   puts "sending data from #{song[:filename]}"
   m = ShoutMetadata.new

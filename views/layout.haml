@@ -6,7 +6,8 @@
     %script{:src => '/script/jquery-1.3.2.js'}
     %script{:src => '/script/hm.js'}
   %body
-    %h1 Hacker Music
+    %h1 
+      %a{:href => '/', :title => 'Hacker Music'} Hacker Music
     - if(!@notice.nil?)
       %h2=@notice
     - if(@current_song)
@@ -24,6 +25,9 @@
       %a{:href => '/change'} Change Password
       |
       %a{:href => '/cancel'} Clear My Vote
+      - if @user[:is_admin]
+        |
+        %a{:href => '/admin'} Admin
     .search
       %form{:id => 'search'}
         %input{:type => 'text', :name => 'q', :id => 'q', :size => '71'}

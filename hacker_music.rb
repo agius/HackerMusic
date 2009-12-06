@@ -9,6 +9,18 @@ $CONFIG = YAML.load_file('config.yaml')
 $DB = Sequel.sqlite($CONFIG[:database][:file_name])
 set :sessions, true
 
+def filter_admin
+  if not session[:id]
+    session[:notice] = 'Log in, please'
+    redirect '/'
+  end
+  @user = $DB[:users].filter(:id => session[:id]).first
+  if not @user[:is_admin]
+    session[:notice] = 'You don\'t have permission'
+    redirect '/'
+  end
+end
+
 helpers do
   include Rack::Utils
   alias_method :url, :escape
@@ -59,6 +71,7 @@ post '/login' do
   if password_hash == @person[:password_hash]
     session[:id] ||= @person[:id]
     session[:notice] = 'Logged In!'
+    session[:is_admin] = @person[:is_admin]
   else
     session[:notice] = 'Wrong name / password.'
   end
@@ -82,6 +95,31 @@ post '/change' do
   $DB[:users].update(:password_hash => password_hash, :salt => salt)
   session[:notice] = 'Password changed!'
   redirect '/'
+end
+
+get '/admin' do
+  filter_admin
+  @users = $DB[:users]
+  haml :admin
+end
+
+post '/admin/user/create' do
+  filter_admin
+  $DB[:users].insert(:name => params[:name], :salt => $CONFIG[:users][:default_salt], :password_hash => Digest::SHA1.hexdigest($CONFIG[:users][:default_pass] + $CONFIG[:users][:default_salt]))
+  redirect back
+end
+
+get '/admin/user/:name/:action' do
+  filter_admin
+  case params[:action]
+  when 'reset'
+    $DB[:users].filter(:name => params[:name]).update(:salt => $CONFIG[:users][:default_salt], :password_hash => Digest::SHA1.hexdigest($CONFIG[:users][:default_pass] + $CONFIG[:users][:default_salt]))
+    session[:notice] = 'Password reset for ' + params[:name]
+  when 'delete'
+    $DB[:users].filter(:name => params[:name]).delete
+    session[:notice] = params[:name] + ' deleted.'
+  end
+  redirect back
 end
 
 get '/cancel' do

@@ -31,6 +31,9 @@ before do
   @notice = session[:notice]
   @current_song = $DB[:plays].join(:songs, :id => :song_id).order(:played_at.desc).first
   @upcoming = $DB[:votes].group(:song_id).join(:songs, :id => :song_id).select(:title, :artist, :COUNT.sql_function(:song_id).as(:cnt)).order(:cnt.desc, :voted_at.asc)
+  if @user
+    @my_votes = $DB[:votes].select({:votes__id => :vote_id}, :song_id, :user_id, :title, :artist, :album, :genre, :year).filter(:user_id => @user).join(:songs, :id => :song_id).all
+  end
 end
 
 get '/search' do
@@ -47,14 +50,48 @@ get '/vote/:id' do |id|
   @song = @songs[:id => params[:id]]
   
   @votes = $DB[:votes]
-  @yourvote = $DB[:votes].filter(:user_id => @user).join(:songs, :id => :song_id).first
-  if @yourvote
-    session[:notice] = 'You already voted for: ' + @yourvote[:title] + ' by ' + @yourvote[:artist] + ' | <a href="/cancel">Clear My Vote</a>'
+  @votecount = $DB[:votes].filter(:user_id => @user).join(:songs, :id => :song_id).all
+  if @votecount.count > $CONFIG[:settings][:max_votes].to_i
+    session[:notice] = 'You have used all your votes. Please clear some, then vote again.'
     redirect back
   end
-  vote_id = @votes.insert(:song_id => @song[:id], :user_id => @user, :voted_at => Time.now) if not @song.nil? and not @yourvote
+  check = $DB[:votes].filter(:song_id => params[:id], :user_id => @user).first
+  if check
+    session[:notice] = 'You have already voted for this song. Branch out!'
+    redirect back
+  end
+  vote_id = @votes.insert(:song_id => @song[:id], :user_id => @user, :voted_at => Time.now) if @song
   @vote = @votes[:id => vote_id]
   session[:notice] = 'You voted for: ' + @song[:title] + ' by ' + @song[:artist]
+  redirect back
+end
+
+get '/cancel/:id' do
+  if not @user
+    session[:notice] = 'You must be logged in!'
+    redirect back
+  end
+  
+  if(params[:id] == 'all')
+    $DB[:votes].filter(:user_id => @user).delete
+    session[:notice] = 'All your votes are cleared!'
+    redirect back
+  end
+  
+  vote = $DB[:votes].filter(:id => params[:id]).first
+  if not vote
+    session[:notice] = 'Delete what?'
+    redirect back
+  end
+  
+  if(vote[:user_id] != @user)
+    session[:notice] = 'You do not have permission'
+    redirect back
+  end
+  
+  $DB[:votes].filter(:id => params[:id]).delete
+  song = $DB[:songs].filter(:id => vote[:song_id]).first
+  session[:notice] = 'Your vote for ' + song[:title] + ' has been cleared.'
   redirect back
 end
 
@@ -119,12 +156,6 @@ get '/admin/user/:name/:action' do
     $DB[:users].filter(:name => params[:name]).delete
     session[:notice] = params[:name] + ' deleted.'
   end
-  redirect back
-end
-
-get '/cancel' do
-  $DB[:votes].filter(:user_id => @user).delete
-  session[:notice] = 'Your votes have been cleared.'
   redirect back
 end
 

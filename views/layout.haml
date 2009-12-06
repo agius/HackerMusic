@@ -24,7 +24,7 @@
       |
       %a{:href => '/change'} Change Password
       |
-      %a{:href => '/cancel'} Clear My Vote
+      %a{:href => '/cancel/all'} Clear My Votes
       - if @user[:is_admin]
         |
         %a{:href => '/admin'} Admin
@@ -45,8 +45,21 @@
         - @upcoming.each do |song|
           %li
             %a{:href => "/vote/#{song[:song_id]}"}= song[:title]
-            =' (' + song[:cnt] + ')'
-          %small= 'By: ' + song[:artist]
+            (#{song[:cnt]})
+            %br
+            %small= 'By: ' + song[:artist]
+      - if @my_votes
+        %h2 My Votes: (#{($CONFIG[:settings][:max_votes].to_i - @my_votes.count).to_s} left)
+        %ul
+          - @my_votes.each do |v|
+            %li
+              #{v[:title]} 
+              |
+              %br
+              %small 
+                by #{v[:artist]}
+                %a{:href => '/cancel/' + v[:vote_id].to_s} Cancel
+            
     #main
       =yield
     - session[:notice] = ''

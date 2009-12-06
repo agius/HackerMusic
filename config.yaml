@@ -12,6 +12,9 @@
 :database:
   :music_dir: '/Users/andrewevans/Music'
   :file_name: 'hacker_music.db'
+  
+:settings:
+  :max_votes: 5
 
 :users:
   :default_salt: default

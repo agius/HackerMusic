@@ -6,7 +6,7 @@
 * Reorganize song list into partial, put browsing stuff into layout
 * Add browsing by track, artist, album, genre, etc
 * Add admin section for create / delete users, reset passwords
-- Possibility for multiple votes
+* Possibility for multiple votes
 - Vote archiving
 - Better design
 - Logic to prevent multiple plays / day

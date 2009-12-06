@@ -32,6 +32,15 @@ DB.create_table :votes do
   Time :voted_at
 end
 
+DB.run 'DROP TABLE IF EXISTS votes_archives'
+
+DB.create_table :votes_archives do
+  primary_key :id
+  foreign_key :song_id, :songs
+  foreign_key :user_id, :users
+  Time :voted_at
+end
+
 DB.run 'DROP TABLE IF EXISTS users'
 
 DB.create_table :users do

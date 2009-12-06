@@ -1,6 +1,7 @@
 %h2 Browse By Year
-%a{:href => '/year'} Back
 - if @tags
   = haml :tag_cloud, :layout => false
 - if @songs
+  %p
+    %a{:href => '/year'} Back
   = haml :song_list, :layout => false

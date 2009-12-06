@@ -28,12 +28,13 @@ end
 
 before do
   @user = session[:id] if session[:id]
-  @notice = session[:notice]
+  @notice = session[:notice] if session[:notice] and !session[:notice].empty?
   @current_song = $DB[:plays].join(:songs, :id => :song_id).order(:played_at.desc).first
-  @upcoming = $DB[:votes].group(:song_id).join(:songs, :id => :song_id).select(:title, :artist, :COUNT.sql_function(:song_id).as(:cnt)).order(:cnt.desc, :voted_at.asc)
+  @upcoming = $DB[:votes].group(:song_id).join(:songs, :id => :song_id).select(:song_id, :title, :artist, :COUNT.sql_function(:song_id).as(:cnt)).order(:cnt.desc, :voted_at.asc)
   if @user
     @my_votes = $DB[:votes].select({:votes__id => :vote_id}, :song_id, :user_id, :title, :artist, :album, :genre, :year).filter(:user_id => @user).join(:songs, :id => :song_id).all
   end
+  @tune_in_link = "http://#{self.env['SERVER_NAME']}:#{$CONFIG[:shout_station][:port]}/#{$CONFIG[:shout_station][:mount]}"
 end
 
 get '/search' do
@@ -51,7 +52,7 @@ get '/vote/:id' do |id|
   
   @votes = $DB[:votes]
   @votecount = $DB[:votes].filter(:user_id => @user).join(:songs, :id => :song_id).all
-  if @votecount.count > $CONFIG[:settings][:max_votes].to_i
+  if @votecount.count >= $CONFIG[:settings][:max_votes].to_i
     session[:notice] = 'You have used all your votes. Please clear some, then vote again.'
     redirect back
   end
@@ -74,7 +75,7 @@ get '/cancel/:id' do
   
   if(params[:id] == 'all')
     $DB[:votes].filter(:user_id => @user).delete
-    session[:notice] = 'All your votes are cleared!'
+    session[:notice] = 'Your votes have been cleared!'
     redirect back
   end
   

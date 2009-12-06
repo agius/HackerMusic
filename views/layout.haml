@@ -2,43 +2,51 @@
 %html
   %head
     %title Hacker Music
+    %link{:rel => 'stylesheet', :type => 'text/css', :href => '/style/reset.css'}
     %link{:rel => 'stylesheet', :type => 'text/css', :href => '/style/hm.css'}
     %script{:src => '/script/jquery-1.3.2.js'}
     %script{:src => '/script/hm.js'}
   %body
-    %h1 
-      %a{:href => '/', :title => 'Hacker Music'} Hacker Music
-    - if(!@notice.nil?)
-      %h2=@notice
+    #header
+      %h1 
+        %a{:href => '/', :title => 'Hacker Music'} Hacker Music
+      #controls
+        - if(@user.nil?)
+          %form{:action => '/login', :method => 'post'}
+            Username:
+            %input{:type => 'text', :name => 'login'}
+            Password:
+            %input{:type => 'password', :name => 'password'}
+            %input{:type => 'submit', :value => 'Log In'}
+        - else
+          %a{:href => '/logout'} Log out
+          |
+          %a{:href => '/change'} Change Password
+          |
+          %a{:href => '/cancel/all'} Clear My Votes
+          - if @user[:is_admin]
+            |
+            %a{:href => '/admin'} Admin
     - if(@current_song)
-      %h3= "Now Playing: #{@current_song[:title]} by #{@current_song[:artist]}"
-    - if(@user.nil?)
-      %form{:action => '/login', :method => 'post'}
-        Username:
-        %input{:type => 'text', :name => 'login'}
-        Password:
-        %input{:type => 'password', :name => 'password'}
-        %input{:type => 'submit', :value => 'Log In'}
-    - else
-      %a{:href => '/logout'} Log out
-      |
-      %a{:href => '/change'} Change Password
-      |
-      %a{:href => '/cancel/all'} Clear My Votes
-      - if @user[:is_admin]
-        |
-        %a{:href => '/admin'} Admin
+      %h2.now_playing= "Now Playing: #{@current_song[:title]} by #{@current_song[:artist]} | Open <a href='#{@tune_in_link}'>this link</a> in Winamp or Itunes to tune in!"
+    - if @notice
+      %h2#notice= @notice
     .search
       %form{:id => 'search'}
         %input{:type => 'text', :name => 'q', :id => 'q', :size => '71'}
         %input{:type => 'submit', :name=>'go', :value => 'Search', :id => 'searchbutton'}
-    .browse
-      Browse By:
-      %a{:href => '/title'} Title
-      %a{:href => '/artist'} Artist
-      %a{:href => '/genre'} Genre
-      %a{:href => '/album'} Album
-      %a{:href => '/year'} Year
+    .browsing_links
+      %p
+        Browse By:
+        %a{:href => '/title'} Title
+        |
+        %a{:href => '/artist'} Artist
+        |
+        %a{:href => '/genre'} Genre
+        |
+        %a{:href => '/album'} Album
+        |
+        %a{:href => '/year'} Year
     .right
       %h2 Upcoming:
       %ul
@@ -54,10 +62,10 @@
           - @my_votes.each do |v|
             %li
               #{v[:title]} 
-              |
               %br
               %small 
                 by #{v[:artist]}
+                |
                 %a{:href => '/cancel/' + v[:vote_id].to_s} Cancel
             
     #main

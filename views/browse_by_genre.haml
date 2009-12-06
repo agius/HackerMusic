@@ -1,6 +1,7 @@
 %h2 Browse By Genre
-%a{:href => '/genre'} Back
 - if @tags
   = haml :tag_cloud, :layout => false
 - if @songs
+  %p
+    %a{:href => '/genre'} Back
   = haml :song_list, :layout => false

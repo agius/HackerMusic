@@ -27,12 +27,22 @@ s.format      = Shout::MP3
 s.connect
 
 loop do
-  songs = DB[:votes].select(:song_id, :filename, :title, :artist, :genre, :album, :year, :COUNT.sql_function(:song_id)).join(:songs, :id => :song_id).group(:song_id).order(:COUNT.sql_function(:song_id).desc, :voted_at.asc)
+  songs = DB[:votes].select(:song_id, :filename, :title, :artist, :genre, :album, :year, :COUNT.sql_function(:song_id), :MIN.sql_function(:voted_at).as(:voted_at)).join(:songs, :id => :song_id).group(:song_id).order(:COUNT.sql_function(:song_id).desc, :voted_at.asc)
   songs = DB[:songs].select(:id.as(:song_id), :filename, :title, :artist, :album, :genre, :year).order(:RANDOM.sql_function()) if songs.empty?
   song = songs.first
   
-  votes = DB[:votes]
-  votes.filter(:song_id => song[:song_id]).delete if not votes.empty?
+  if not song
+    puts 'Database is empty, please run indexer.rb'
+    Process.exit
+  end
+  
+  votes = DB[:votes].filter(:song_id => song[:song_id])
+  if votes
+    votes.each do |v|
+      DB[:votes_archives].insert(:song_id => v[:song_id], :user_id => v[:user_id], :voted_at => v[:voted_at])
+    end
+    votes.delete
+  end
   
   plays = DB[:plays]
   plays.insert(:song_id => song[:song_id], :played_at => Time.now)

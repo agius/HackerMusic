@@ -1,7 +1,26 @@
-body{font-family: Verdana, Arial, sans-serif;}
-h1{font: 48px courier, monospace;}
-div.main{width: 50%;}
-div.right{float:right; margin-right:10%; width:30%;}
-ul.song_list{list-style-type:none; list-style-position:outside; margin: 0; padding: 0;}
-.song_list li{margin: 1em; margin-left: 0;}
-.tag_cloud{width: 50%;}
+body{ font-family: "Trebuchet MS", Helvetica, sans-serif;}
+a{/*color: #2E9AFF;*/ text-decoration: none;}
+a:visited{/*color: #0761B6;*/}
+a:hover{/*color: #fff; background: #2E9AFF;*/}
+small{font-size: 85%;}
+#header{background: black; padding: 5px;}
+#header h1{font: 3em "Lucida Console", Monaco, monospace;}
+#header a{color: white;}
+#header a:visited{color: white; background: none	;}
+#header a:hover{text-decoration: underline;}
+#controls{color: #fff; text-align: right; margin-top: -1.5em; padding-right: 1em;}
+.now_playing{color: #666; margin: 5px;}
+#notice{background: #FCF39A; padding: 5px;}
+.search{margin: 15px 5px  ;}
+.browsing_links{font-size: 18px; clear: both; margin: 5px;}
+#main{width: 50%;}
+#main h2{font-size: 48px; margin: 32px 0 10px 5px;}
+#main p{margin: 10px;}
+.right{float:right; margin-right:10%; width:30%;}
+.right h2{font-size: 24px;}
+.right ul{margin: 1em 0 1em 0;}
+.right li{margin: .5em 0 .5em 0;}
+.song_list{}
+.song_list li{font-size: 18px; margin: 1em; margin-left: .5em;}
+.tag_cloud{}
+.alphabet_list{font-size: 24px; margin: 10px;}

@@ -2,3 +2,6 @@ logs
 logs/*
 hacker_music.db
 thin.pid
+config.yml
+settings.yaml
+icecast.xml

@@ -227,6 +227,11 @@ get %r{/year/(.*)} do |y|
   haml :browse_by_year
 end
 
+get '/random' do |y|
+  @songs = DB[:songs].order(($CONFIG[:database][:type] == 'mysql' ? :RAND : :RANDOM).sql_function()).limit(10)
+  haml :browse_by_random
+end
+
 get '/' do
   @songs = $DB[:plays].join(:songs, :id => :song_id).group(:song_id).order(:played_at.desc).limit(10)
   haml :index

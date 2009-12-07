@@ -228,7 +228,7 @@ get %r{/year/(.*)} do |y|
 end
 
 get '/random' do |y|
-  @songs = DB[:songs].order(($CONFIG[:database][:type] == 'mysql' ? :RAND : :RANDOM).sql_function()).limit(10)
+  @songs = $DB[:songs].order(($CONFIG[:database][:type] == 'mysql' ? :RAND : :RANDOM).sql_function()).limit(10)
   haml :browse_by_random
 end
 

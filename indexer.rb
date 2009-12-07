@@ -3,9 +3,8 @@ require 'sequel'
 require 'sqlite3'
 require 'tagfile/tagfile'
 
-@config = YAML.load_file('config.yaml')
-@db_file = @config[:database][:file_name]
-@music_dir = @config[:database][:music_dir]
+$CONFIG = YAML.load_file('settings.yaml')
+@music_dir = $CONFIG[:database][:music_dir]
 
 class HM_Indexer
 
@@ -17,14 +16,19 @@ class HM_Indexer
         scan(path) 
       else
         next if not d =~ /\.mp3$/
+        next if @dataset.filter(:filename => path).first
         tag = TagFile::File.new(path)
+        matches = /([^\/]+)\/([^\/]+)\/([^\.\/]+)\.mp3$/.match(path)
+        album = matches ? matches[1] : ''
+        artist = matches ? matches[2] : ''
+        title = matches ? matches[3] : ''
         item = {:filename => path}
-        item[:title] = tag.title or d
-        item[:artist] = tag.artist or ''
-        item[:album] = tag.album or ''
-        item[:year] = tag.year or ''
-        item[:genre] = tag.genre or ''
-        item[:track] = tag.track or ''
+        item[:title] = tag.title == '' ? title : tag.title
+        item[:artist] = tag.artist == '' ? artist : tag.artist
+        item[:album] = tag.album == '' ? album : tag.album
+        item[:year] = tag.year or 'None'
+        item[:genre] = tag.genre or 'None'
+        item[:track] = tag.track or '0'
         begin
           @dataset.insert(item)
         rescue
@@ -37,12 +41,18 @@ class HM_Indexer
   end
   
   def initialize(database)
-    @DB = Sequel.sqlite(database)
+    @DB = database
     @dataset = @DB[:songs]
   end
   
 end
 
-indexer = HM_Indexer.new(@db_file)
+case $CONFIG[:database][:type]
+when 'mysql'
+  DB = Sequel.connect($CONFIG[:database][:connect_string])
+else
+  DB = Sequel.sqlite($CONFIG[:database][:file_name])
+end
+indexer = HM_Indexer.new(DB)
 indexer.scan(@music_dir)
 puts 'Complete'

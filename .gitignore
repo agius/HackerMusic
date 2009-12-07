@@ -1,3 +1,4 @@
 logs
 logs/*
 hacker_music.db
+thin.pid

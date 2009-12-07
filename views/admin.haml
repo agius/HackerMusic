@@ -1,19 +1,19 @@
 %h2 Admin
 %h3 Users
-%ul
-- @users.each do |u|
-  %li
-    =u[:name]
-    |
-    %a{:href => '/admin/user/' + url(u[:name]) + '/reset'} Reset
-    |
-    %a{:href => '/admin/user/' + url(u[:name]) + '/delete'} Delete
+%ul.admin_users
+  - @users.each do |u|
+    %li
+      =u[:name]
+      |
+      %a{:href => '/admin/user/' + url(u[:name]) + '/reset'} Reset
+      |
+      %a{:href => '/admin/user/' + url(u[:name]) + '/delete'} Delete
 
 %h3 New User
-%form{:action => '/admin/user/create', :method => 'post'}
-  Name:
-  %input{:type => 'text', :name => 'name', :size => 20}
-  %br
-  = 'Password: ' + $CONFIG[:users][:default_pass]
-  %br
-  %input{:type => 'submit', :value => 'Create'}
+%form.admin_user_form{:action => '/admin/user/create', :method => 'post'}
+  %p 
+    Name:
+    %input{:type => 'text', :name => 'name', :size => 20}
+  %p= 'Password: ' + $CONFIG[:users][:default_pass]
+  %p
+    %input{:type => 'submit', :value => 'Create'}

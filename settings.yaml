@@ -10,6 +10,8 @@
   :genre: 'Awesome'
 
 :database:
+  :type: mysql
+  :connect_string: 'mysql://root:@localhost/hacker_music'
   :music_dir: '/Users/andrewevans/Music'
   :file_name: 'hacker_music.db'
   

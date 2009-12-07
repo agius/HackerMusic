@@ -7,11 +7,16 @@ require 'rubygems'
 require 'shout'
 require 'sequel'
 
-@config = YAML.load_file('config.yaml')
-@station = @config[:shout_station]
-@db = @config[:database]
+$CONFIG = YAML.load_file('settings.yaml')
+@station = $CONFIG[:shout_station]
 
-DB = Sequel.sqlite(@db[:file_name])
+# Connect to db
+case $CONFIG[:database][:type]
+when 'mysql'
+  DB = Sequel.connect($CONFIG[:database][:connect_string])
+else
+  DB = Sequel.sqlite($CONFIG[:database][:file_name])
+end
 BLOCKSIZE = 16384
 
 s = Shout.new

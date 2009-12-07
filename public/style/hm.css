@@ -11,11 +11,15 @@ small{font-size: 85%;}
 #controls{color: #fff; text-align: right; margin-top: -1.5em; padding-right: 1em;}
 .now_playing{color: #666; margin: 5px;}
 #notice{background: #FCF39A; padding: 5px;}
-.search{margin: 15px 5px  ;}
+.search{margin: 15px 5px;}
 .browsing_links{font-size: 18px; clear: both; margin: 5px;}
 #main{width: 50%;}
 #main h2{font-size: 48px; margin: 32px 0 10px 5px;}
+#main h3{font-size: 32px; margin: 24px 0 10px 5px;}
 #main p{margin: 10px;}
+.admin_users{font-size: 18px; margin: 1em; margin-left: .5em;}
+.admin_users li{margin: .5em;}
+.admin_user_form{margin: 1em; margin-left: .5em;}
 .right{float:right; margin-right:10%; width:30%;}
 .right h2{font-size: 24px;}
 .right ul{margin: 1em 0 1em 0;}

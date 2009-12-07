@@ -10,8 +10,9 @@
 * Vote archiving
 * Better design
 * README / setup instructions
-- Run on Mongrel / MySQL for better handling
-- Use filename / dir names when taglib returns nothing
+* Use filename / dir names when taglib returns nothing
+* make admin section more REST-y
+* Run on Thin / MySQL for better handling
 
 IDEAS:
 - Logic to prevent multiple plays / day

@@ -5,8 +5,13 @@ require 'digest/sha1'
 require 'haml'
 require 'shout'
 
-$CONFIG = YAML.load_file('config.yaml')
-$DB = Sequel.sqlite($CONFIG[:database][:file_name])
+$CONFIG = YAML.load_file('settings.yaml')
+case $CONFIG[:database][:type]
+when 'mysql'
+  $DB = Sequel.connect($CONFIG[:database][:connect_string])
+else
+  $DB = Sequel.sqlite($CONFIG[:database][:file_name])
+end
 set :sessions, true
 
 def filter_admin
@@ -147,16 +152,17 @@ post '/admin/user/create' do
   redirect back
 end
 
-get '/admin/user/:name/:action' do
+get '/admin/user/:name/reset' do
   filter_admin
-  case params[:action]
-  when 'reset'
-    $DB[:users].filter(:name => params[:name]).update(:salt => $CONFIG[:users][:default_salt], :password_hash => Digest::SHA1.hexdigest($CONFIG[:users][:default_pass] + $CONFIG[:users][:default_salt]))
-    session[:notice] = 'Password reset for ' + params[:name]
-  when 'delete'
-    $DB[:users].filter(:name => params[:name]).delete
-    session[:notice] = params[:name] + ' deleted.'
-  end
+  $DB[:users].filter(:name => params[:name]).update(:salt => $CONFIG[:users][:default_salt], :password_hash => Digest::SHA1.hexdigest($CONFIG[:users][:default_pass] + $CONFIG[:users][:default_salt]))
+  session[:notice] = 'Password reset for ' + params[:name]
+  redirect back
+end
+
+get '/admin/user/:name/delete' do
+  filter_admin
+  $DB[:users].filter(:name => params[:name]).delete
+  session[:notice] = params[:name] + ' deleted.'
   redirect back
 end
 

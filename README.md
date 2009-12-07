@@ -55,7 +55,7 @@ We set up Hacker Music on a mac laptop, so there will be a lot of references to 
     
     > gem install sqlite3-ruby
     
-    > gem install sinatra
+    > gem install sinatra-sinatra
     
     > gem install sequel
     
@@ -63,7 +63,16 @@ We set up Hacker Music on a mac laptop, so there will be a lot of references to 
     
     > gem install ruby-shout
     
-5.  Once you're done installing all those dependancies (painless, right?), you're almost ready to rock! Be sure to update config.yaml to point to your icecast server (unless you're going to run the included icecast.xml), and your preferred music directory.
+    > gem install thin
+    
+5.  Once you're done installing all those dependancies (painless, right?), you're almost ready to rock! You will want to move the following files and update them to point to your application directory:
+    
+    > config.yml-dist -> config.yml
+    
+    > settings.yaml-dist -> settings.yaml
+    
+    > icecast.xml-dist -> icecast.xml
+    
 6.  Run the following from your Hacker Music directory:
     
     > ruby setup.rb
@@ -74,13 +83,9 @@ We set up Hacker Music on a mac laptop, so there will be a lot of references to 
     
     That should recursively index all the MP3's from the music directory specified in config.yaml
     
-    > icecast -b -c icecast.xml
+    > ./start.sh
     
-    That starts your icecast server in the background.
-    
-    > ruby hacker_music.rb
-    
-    That starts the application running.
+    This defaults to starting an icecast server in the background using icecast.xml in the application directory, and starting the Sinatra application using [Thin](http://code.macournoyer.com/thin/ "Thin Ruby Server"), and running streamer.rb in the background.
     
 7.  Start rockin'! Go to [http://localhost:4567](http://localhost:4567 "Your Sinatra Server"), log in with the default admin name / password specified in config.yaml and run your server.
 

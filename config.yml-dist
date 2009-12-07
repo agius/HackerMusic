@@ -1,0 +1,14 @@
+---
+  environment: production
+  chdir: /path/to/my/application
+  address: 127.0.0.1
+  user: username
+  group: groupname
+  port: 4567
+  pid: /path/to/my/application/thin.pid
+  rackup: /path/to/my/application/rackup_hm.ru
+  log: /path/to/my/application/logs/thin.log
+  max_conns: 1024
+  timeout: 30
+  max_persistent_conns: 512
+  daemonize: true

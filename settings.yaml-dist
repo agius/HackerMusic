@@ -10,9 +10,9 @@
   :genre: 'Awesome'
 
 :database:
-  :type: mysql
-  :connect_string: 'mysql://root:@localhost/hacker_music'
-  :music_dir: '/Users/andrewevans/Music'
+  :type: sqlite
+  :connect_string: 'mysql://user:password@localhost/db_name'
+  :music_dir: '/path/to/my/music/folder'
   :file_name: 'hacker_music.db'
   
 :settings:
@@ -20,24 +20,11 @@
 
 :users:
   :default_salt: default
-  :default_pass: noodle
+  :default_pass: changeme
   :names: [
     andrew,
-    ben,
-    mike,
-    torsten,
-    chas,
-    danielle,
-    marlene,
-    heesun,
-    rebeca,
-    dian,
-    sean,
-    kirill,
     bob,
-    sumon,
-    estee,
-    amy,
-    justin
+    candice,
+    danielle
   ]
   :admin: andrew

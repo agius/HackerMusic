@@ -33,7 +33,12 @@ s.connect
 
 loop do
   songs = DB[:votes].select(:song_id, :filename, :title, :artist, :genre, :album, :year, :COUNT.sql_function(:song_id), :MIN.sql_function(:voted_at).as(:voted_at)).join(:songs, :id => :song_id).group(:song_id).order(:COUNT.sql_function(:song_id).desc, :voted_at.asc)
-  songs = DB[:songs].select(:id.as(:song_id), :filename, :title, :artist, :album, :genre, :year).order(:RANDOM.sql_function()) if songs.empty?
+  case $CONFIG[:database][:type]
+  when 'mysql'
+    songs = DB[:songs].select(:id.as(:song_id), :filename, :title, :artist, :album, :genre, :year).order(:RAND.sql_function()) if songs.empty?
+  else
+    songs = DB[:songs].select(:id.as(:song_id), :filename, :title, :artist, :album, :genre, :year).order(:RANDOM.sql_function()) if songs.empty?
+  end
   song = songs.first
   
   if not song

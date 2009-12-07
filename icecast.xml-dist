@@ -125,11 +125,11 @@
 
     <paths>
 		<!-- basedir is only used if chroot is enabled -->
-        <basedir>/Users/andrewevans/Sites/Sinatra/HackerMusic</basedir>
+        <basedir>/path/to/my/app</basedir>
 
         <!-- Note that if <chroot> is turned on below, these paths must both
              be relative to the new root, not the original root -->
-        <logdir>/Users/andrewevans/Sites/Sinatra/HackerMusic/logs</logdir>
+        <logdir>/path/to/my/app/logs</logdir>
         <webroot>/opt/local/share/icecast/web</webroot>
         <adminroot>/opt/local/share/icecast/admin</adminroot>
         <!-- <pidfile>/opt/local/share/icecast/icecast.pid</pidfile> -->

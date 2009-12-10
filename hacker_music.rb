@@ -43,7 +43,7 @@ before do
 end
 
 get '/search' do
-  @songs = $DB[:songs].grep([:title, :artist, :filename, :genre, :album], "%#{params[:q]}%")
+  @songs = $DB[:songs].grep([:title, :artist, :filename, :genre, :album], ["%#{params[:q]}%", {:case_insensitive => true}])
   haml :song_list, :layout => !request.xhr?
 end
 
@@ -171,7 +171,7 @@ get '/title' do
 end
 
 get '/title/:letter' do
-  @songs = $DB[:songs].grep([:title], "#{params[:letter]}%")
+  @songs = $DB[:songs].grep([:title], ["#{params[:letter]}%", {:case_insensitive => true}])
   haml :browse_by_title
 end
 
@@ -180,7 +180,7 @@ get '/artist' do
 end
 
 get '/artist/:letter' do
-  @songs = $DB[:songs].grep([:artist], "#{params[:letter]}%")
+  @songs = $DB[:songs].grep([:artist], ["#{params[:letter]}%", {:case_insensitive => true}])
   haml :browse_by_artist
 end
 
@@ -189,7 +189,7 @@ get '/album' do
 end
 
 get '/album/:letter' do
-  @songs = $DB[:songs].grep([:album], "#{params[:letter]}%")
+  @songs = $DB[:songs].grep([:album], ["#{params[:letter]}%", {:case_insensitive => true}])
   haml :browse_by_album
 end
 
@@ -206,7 +206,7 @@ end
 
 get %r{/genre/(.*)} do |g|
   genre = unescape g
-  @songs = $DB[:songs].grep([:genre], "#{g}%")
+  @songs = $DB[:songs].grep([:genre], ["#{g}%", {:case_insensitive => true}])
   haml :browse_by_genre
 end
 
@@ -223,7 +223,7 @@ end
 
 get %r{/year/(.*)} do |y|
   genre = unescape y
-  @songs = $DB[:songs].grep([:year], "#{y}%")
+  @songs = $DB[:songs].grep([:year], ["#{y}%", {:case_insensitive => true}])
   haml :browse_by_year
 end
 

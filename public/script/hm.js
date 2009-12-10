@@ -6,9 +6,11 @@ $(window).load(function(){
   $('#q').bind('blur', function(){
     if($('#q').val() == '') $('#q').val('Search by keyword...')
   });
+  /*
   $('#search').submit(function(e){
     $('#main').load('/search', $('#search').serialize());
     return false;
   });
+  */
   
 });

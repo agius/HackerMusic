@@ -32,9 +32,9 @@
     - if @notice
       %h2#notice= @notice
     .search
-      %form{:id => 'search'}
+      %form{:action => '/search', :id => 'search'}
         %input{:type => 'text', :name => 'q', :id => 'q', :size => '71'}
-        %input{:type => 'submit', :name=>'go', :value => 'Search', :id => 'searchbutton'}
+        %input{:type => 'submit', :value => 'Search', :id => 'searchbutton'}
     .browsing_links
       %p
         Browse By:

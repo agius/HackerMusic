@@ -135,7 +135,7 @@ post '/change' do
   @person = $DB[:users].filter(:id => @user)
   salt = Time.new.to_f.to_s
   password_hash = Digest::SHA1.hexdigest(params[:new_password] + salt)
-  $DB[:users].update(:password_hash => password_hash, :salt => salt)
+  $DB[:users].filter(:id => @user).update(:password_hash => password_hash, :salt => salt)
   session[:notice] = 'Password changed!'
   redirect '/'
 end

@@ -175,21 +175,35 @@ get '/title/:letter' do
   haml :browse_by_title
 end
 
-get '/artist' do
+get '/artist/list' do
   haml :browse_by_artist
 end
 
-get '/artist/:letter' do
-  @songs = $DB[:songs].grep([:artist], ["#{params[:letter]}%", {:case_insensitive => true}])
+get '/artist/list/:letter' do
+  # Required for category_list.haml
+  @field = :artist
+  @list = $DB[:songs].grep([:artist], ["#{params[:letter]}%", {:case_insensitive => true}]).group_by(:artist)
   haml :browse_by_artist
 end
 
-get '/album' do
+get '/artist/view/:artist' do
+  @artist = params[:artist]
+  @songs = $DB[:songs].grep([:artist], ["#{params[:artist]}", {:case_insensitive => true}])
+  haml :browse_by_artist
+end
+
+get '/album/list' do
   haml :browse_by_album
 end
 
-get '/album/:letter' do
-  @songs = $DB[:songs].grep([:album], ["#{params[:letter]}%", {:case_insensitive => true}])
+get '/album/list/:letter' do
+  @field = :album
+  @list = $DB[:songs].grep([:album], ["#{params[:letter]}%", {:case_insensitive => true}]).group_by(:album)
+  haml :browse_by_album
+end
+
+get '/album/view/:album' do
+  @songs = $DB[:songs].grep([:album], ["#{params[:album]}", {:case_insensitive => true}])
   haml :browse_by_album
 end
 

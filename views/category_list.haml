@@ -1,0 +1,5 @@
+.category_list
+  %ul
+    - @list.each do |i|
+      %li
+        %a{:href => @url + '/' + escape(i[@field])}= i[@field]

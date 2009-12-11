@@ -203,6 +203,7 @@ get '/album/list/:letter' do
 end
 
 get '/album/view/:album' do
+  @album = params[:album]
   @songs = $DB[:songs].grep([:album], ["#{params[:album]}", {:case_insensitive => true}])
   haml :browse_by_album
 end

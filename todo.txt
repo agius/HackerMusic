@@ -16,7 +16,7 @@
 * Add individual artist / album pages beneath artist/:letter
 * Artist / album links in song_list
 * give search page its own URL, screw AJAX (stop breaking the back button / redirects)
-- remove primitive shell scripts, update README to reflect default thin settings
+* remove primitive shell scripts, update README to reflect default thin settings
 - make static site hackermusic.com to advertise the project (use webby?)
 
 IDEAS:

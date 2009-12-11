@@ -77,21 +77,23 @@ We set up Hacker Music on a mac laptop, so there will be a lot of references to 
     
     > ruby setup.rb
     
-    That sets up your database and all the associated tables / default entries from config.yaml
+    That sets up your database and all the associated tables / default entries from settings.yaml
     
     > ruby indexer.rb
     
-    That should recursively index all the MP3's from the music directory specified in config.yaml
+    That should recursively index all the MP3's from the music directory specified in settings.yaml
     
-    > ./start.sh
+    > icecast2 -b -c icecast.xml
+    > thin -c config.yml -R rackup_hm.ru start
+    > ruby streamer.rb >logs/streamer.log &
     
     This defaults to starting an icecast server in the background using icecast.xml in the application directory, and starting the Sinatra application using [Thin](http://code.macournoyer.com/thin/ "Thin Ruby Server"), and running streamer.rb in the background.
     
-7.  Start rockin'! Go to [http://localhost:4567](http://localhost:4567 "Your Sinatra Server"), log in with the default admin name / password specified in config.yaml and run your server.
+7.  Start rockin'! Go to [http://localhost:4567](http://localhost:4567 "Your Sinatra Server"), log in with the default admin name / password specified in settings.yaml and run your server.
 
 Settings
 -----------
-The included config.yaml contains a number of settings related to the operation of Hacker Music. Here's a little explanation:
+The included settings.yaml contains a number of settings related to the operation of Hacker Music. Here's a little explanation:
 
 > :shout_station
 

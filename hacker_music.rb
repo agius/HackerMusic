@@ -247,6 +247,13 @@ get '/random' do |y|
   haml :browse_by_random
 end
 
+get '/get/:id' do
+  @song = $DB[:songs].filter(:id => params[:id]).first
+  return if not @song
+  mime :mp3, 'audio/mpeg'
+  send_file @song[:filename]
+end
+
 get '/' do
   @songs = $DB[:plays].join(:songs, :id => :song_id).group(:song_id).order(:played_at.desc).limit(10)
   haml :index

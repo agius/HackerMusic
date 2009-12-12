@@ -24,9 +24,9 @@ IDEAS:
 - Skip current song option (only for user who requested current song? only for admin?)
 - itunes library importer option
 - default playlist file instead of random selections
-- flash player to preview songs before voting
+* flash player to preview songs before voting
 - upload form / flash obj (for multiple, large uplaods) so people can drop in their own music
-- link to download songs / currently playing song
+* link to download songs / currently playing song
 - reports: most-played genres, participation ratios, etc
 - package into a gem?
 - mpd support

@@ -25,7 +25,8 @@ IDEAS:
 - itunes library importer option
 - default playlist file instead of random selections
 * flash player to preview songs before voting
-- upload form / flash obj (for multiple, large uplaods) so people can drop in their own music
+* upload form / flash obj (for multiple, large uplaods) so people can drop in their own music
+- better security on uploading? random user ids?
 * link to download songs / currently playing song
 - reports: most-played genres, participation ratios, etc
 - package into a gem?

@@ -4,6 +4,7 @@ require 'sequel'
 require 'digest/sha1'
 require 'haml'
 require 'shout'
+require 'HM_Indexer'
 
 $CONFIG = YAML.load_file('settings.yaml')
 case $CONFIG[:database][:type]
@@ -47,6 +48,8 @@ before do
     @my_votes = $DB[:votes].select({:votes__id => :vote_id}, :song_id, :user_id, :title, :artist, :album, :genre, :year).filter(:user_id => @user).join(:songs, :id => :song_id).all
   end
   @tune_in_link = "http://#{self.env['SERVER_NAME']}:#{$CONFIG[:shout_station][:port]}/#{$CONFIG[:shout_station][:mount]}"
+  @styles = ['reset.css', 'hm.css']
+  @scripts = ['jquery-1.3.2.js', 'audio-player.js', 'hm.js']
 end
 
 get '/search' do
@@ -257,22 +260,35 @@ get '/get/:id' do
 end
 
 get '/upload' do
+  filter_user
+  @scripts << 'swfobject.js' << 'jquery.uploadify.v2.1.0.min.js' << 'hm_upload.js'
+  @styles << 'uploadify.css'
   haml :upload_form
 end
 
 post '/upload' do
-  filter_user
-  uploads_dir = $CONFIG[:database][:music_dir] + '/uploads/'
-  FileUtils.mkdir_p(uploads_dir)
-  if FileUtils.mv(params[:music_file][:tempfile].path, uploads_dir + params[:music_file][:filename])
-    session[:notice] = 'File uploaded: ' + params[:music_file][:filename]
+  if(params[:user_id])
+    @user = params[:user_id]
   else
+    filter_user
+  end
+  
+  @user = $DB[:users].filter(:id => @user).first
+  uploads_dir = $CONFIG[:database][:music_dir] + '/uploads/' + @user[:name] + '/'
+  FileUtils.mkdir_p(uploads_dir)
+  
+  dest = uploads_dir + params[:Filename]
+  if FileUtils.mv(params[:Filedata][:tempfile].path, dest)
+    indexer = HM_Indexer.new($DB)
+    indexer.index(dest)
+    session[:notice] = 'File uploaded: ' + params[:Filename]
+  else
+    return 'false' if params[:user_id]
     session[:notice] = 'File failed to upload.'
   end
-  Kernel.fork do
-    system('ruby indexer.rb')
-  end
-  redirect '/upload'
+  
+  return 'true' if params[:user_id]
+  redirect back
 end
 
 get '/' do

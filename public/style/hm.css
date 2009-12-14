@@ -29,4 +29,5 @@ small{font-size: 85%;}
 .song_list small, .category_list small{font-size: 65%;}
 .tag_cloud{}
 .alphabet_list{font-size: 24px; margin: 10px;}
-.upload_form{margin: 10px;}
+#upload_controls{margin: 10px;}
+#upload_form{margin: 10px;}

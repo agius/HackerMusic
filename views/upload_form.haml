@@ -1,5 +1,10 @@
 %h2 Upload Your MP3 Files
-.upload_form
+#upload_controls
+  %a{:href => '#', :id => 'upload_files'} Upload Selected Files
+  |
+  %a{:href => '#', :id => 'clear_queue'} Clear Queue
+#upload_form
+  %br
   %form{:action => '/upload', :enctype => 'multipart/form-data', :method => 'post'}
-    %input{:name => 'music_file', :type => 'file'}
-    %input{:type => 'submit', :value => 'Upload!'}
+    %input{:id => 'fileInput', :type => 'file', :name => 'fileInput'}
+    %input{:id => 'user_id', :type => 'hidden', :name => 'user_id', :value => @user}

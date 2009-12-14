@@ -42,7 +42,7 @@ end
 before do
   @user = session[:id] if session[:id]
   @notice = session[:notice] if session[:notice] and !session[:notice].empty?
-  @current_song = $DB[:plays].join(:songs, :id => :song_id).order(:played_at.desc).first
+  @current_song = $DB[:plays].select(:song_id.as(:id), :title, :artist, :album, :genre, :year).join(:songs, :id => :song_id).order(:played_at.desc).first
   @upcoming = $DB[:votes].group(:song_id).join(:songs, :id => :song_id).select(:song_id, :title, :artist, :COUNT.sql_function(:song_id).as(:cnt)).order(:cnt.desc, :voted_at.asc)
   if @user
     @my_votes = $DB[:votes].select({:votes__id => :vote_id}, :song_id, :user_id, :title, :artist, :album, :genre, :year).filter(:user_id => @user).join(:songs, :id => :song_id).all
@@ -250,6 +250,11 @@ end
 get '/random' do |y|
   @songs = $DB[:songs].order(($CONFIG[:database][:type] == 'mysql' ? :RAND : :RANDOM).sql_function()).limit(10)
   haml :browse_by_random
+end
+
+get '/upcoming' do
+  @songs = $DB[:votes].group(:song_id).join(:songs, :id => :song_id).select(:filename, :song_id.as(:id), :title, :artist, :COUNT.sql_function(:song_id).as(:cnt)).order(:cnt.desc, :voted_at.asc)
+  haml :browse_by_upcoming
 end
 
 get '/get/:id' do

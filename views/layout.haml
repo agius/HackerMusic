@@ -30,7 +30,14 @@
             |
             %a{:href => '/admin'} Admin
     - if(@current_song)
-      %h2.now_playing= "Now Playing: #{@current_song[:title]} by #{@current_song[:artist]} | Open <a href='#{@tune_in_link}'>this link</a> in Winamp or Itunes to tune in!"
+      %h2.now_playing 
+        Now Playing: #{@current_song[:title]} by #{@current_song[:artist]}  
+        |
+        %a{:href => '/get/' + @current_song[:id].to_s} Download
+        |
+        Open 
+        %a{:href => @tune_in_link} This Link
+        in Winamp or Itunes to tune in!
     - if @notice
       %h2#notice= @notice
     .search
@@ -51,6 +58,8 @@
         %a{:href => '/year'} Year
         |
         %a{:href => '/random'} Random
+        |
+        %a{:href => '/upcoming'} Upcoming
     .right
       %h2 Upcoming:
       %ul

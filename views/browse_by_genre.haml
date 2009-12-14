@@ -1,4 +1,7 @@
-%h2 Browse By Genre
+- if @genre
+  %h2 Browsing #{@genre}
+- else
+  %h2 Browse By Genre
 - if @tags
   = haml :tag_cloud, :layout => false
 - if @songs

@@ -1,4 +1,7 @@
-%h2 Browse By Year
+- if @year
+  %h2 Browsing #{@year}
+- else  
+  %h2 Browse By Year
 - if @tags
   = haml :tag_cloud, :layout => false
 - if @songs

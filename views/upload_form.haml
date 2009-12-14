@@ -1,0 +1,5 @@
+%h2 Upload Your MP3 Files
+.upload_form
+  %form{:action => '/upload', :enctype => 'multipart/form-data', :method => 'post'}
+    %input{:name => 'music_file', :type => 'file'}
+    %input{:type => 'submit', :value => 'Upload!'}

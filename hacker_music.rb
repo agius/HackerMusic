@@ -26,6 +26,13 @@ def filter_admin
   end
 end
 
+def filter_user
+  if not session[:id]
+    session[:notice] = 'Log in, please'
+    redirect '/'
+  end
+end
+
 helpers do
   include Rack::Utils
   alias_method :url, :escape
@@ -48,10 +55,7 @@ get '/search' do
 end
 
 get '/vote/:id' do |id|
-  if not @user
-    session[:notice] = 'You must be logged in to vote!'
-    redirect back
-  end
+  filter_user
   @songs = $DB[:songs]
   @song = @songs[:id => params[:id]]
   
@@ -73,10 +77,7 @@ get '/vote/:id' do |id|
 end
 
 get '/cancel/:id' do
-  if not @user
-    session[:notice] = 'You must be logged in!'
-    redirect back
-  end
+  filter_user
   
   if(params[:id] == 'all')
     $DB[:votes].filter(:user_id => @user).delete
@@ -132,6 +133,7 @@ get '/change' do
 end
 
 post '/change' do
+  filter_user
   @person = $DB[:users].filter(:id => @user)
   salt = Time.new.to_f.to_s
   password_hash = Digest::SHA1.hexdigest(params[:new_password] + salt)
@@ -220,8 +222,8 @@ get '/genre' do
 end
 
 get %r{/genre/(.*)} do |g|
-  genre = unescape g
-  @songs = $DB[:songs].grep([:genre], ["#{g}%", {:case_insensitive => true}])
+  @genre = unescape g
+  @songs = $DB[:songs].grep([:genre], ["#{@genre}%", {:case_insensitive => true}])
   haml :browse_by_genre
 end
 
@@ -237,8 +239,8 @@ get '/year' do
 end
 
 get %r{/year/(.*)} do |y|
-  genre = unescape y
-  @songs = $DB[:songs].grep([:year], ["#{y}%", {:case_insensitive => true}])
+  @year = unescape y
+  @songs = $DB[:songs].grep([:year], ["#{@year}%", {:case_insensitive => true}])
   haml :browse_by_year
 end
 
@@ -252,6 +254,25 @@ get '/get/:id' do
   return if not @song
   mime :mp3, 'audio/mpeg'
   send_file @song[:filename]
+end
+
+get '/upload' do
+  haml :upload_form
+end
+
+post '/upload' do
+  filter_user
+  uploads_dir = $CONFIG[:database][:music_dir] + '/uploads/'
+  FileUtils.mkdir_p(uploads_dir)
+  if FileUtils.mv(params[:music_file][:tempfile].path, uploads_dir + params[:music_file][:filename])
+    session[:notice] = 'File uploaded: ' + params[:music_file][:filename]
+  else
+    session[:notice] = 'File failed to upload.'
+  end
+  Kernel.fork do
+    system('ruby indexer.rb')
+  end
+  redirect '/upload'
 end
 
 get '/' do

@@ -1,11 +1,7 @@
 %ul.song_list
   - @songs.each do |song|
     %li
-      %p{:id => song[:id].to_s + '_player'}
-        Enable JS and Flash to stream
-        %br
-      %script{:type => 'text/javascript'}
-        AudioPlayer.embed("#{song[:id].to_s + '_player'}", {soundFile: "/get/#{song[:id].to_s}"});
+      %p{:id => song[:id].to_s + '_player', :style => 'visibility: hidden'}
       %br
       %a{:href => "/vote/#{song[:id]}"}= song[:title]
       %br
@@ -15,6 +11,10 @@
         %a{:href => '/year/' + escape(song[:year])}= song[:year]
         \-
         %a{:href => '/album/view/' + escape(song[:album])}= song[:album]
-        \-
+        %br
+        %strong
+          Actions:
         %a{:href => '/get/' + song[:id].to_s} Download
+        \-
+        %a{:href => '#' + song[:id].to_s, :class => 'player_link'} Preview
   

@@ -6,11 +6,14 @@ $(window).load(function(){
   $('#q').bind('blur', function(){
     if($('#q').val() == '') $('#q').val('Search by keyword...')
   });
-  /*
-  $('#search').submit(function(e){
-    $('#main').load('/search', $('#search').serialize());
-    return false;
+  $('.player_link').each(function(i){
+    console.log(this);
+    $(this).bind('click', function(e){
+        href = e.target.href
+        id = href.substring(href.indexOf('#') + 1)
+        AudioPlayer.embed(id + '_player', {soundFile: "/get/" + id, autostart: 'yes'});
+        return false;
+    });
   });
-  */
   
 });

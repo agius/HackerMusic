@@ -20,8 +20,9 @@
             %input{:type => 'submit', :value => 'Log In'}
         - else
           %a{:href => '/logout'} Log out
-          |
-          %a{:href => '/upload'} Upload Files
+          - if $CONFIG[:settings][:allow_uploads]
+            |
+            %a{:href => '/upload'} Upload Files
           |
           %a{:href => '/change'} Change Password
           |
@@ -32,8 +33,9 @@
     - if(@current_song)
       %h2.now_playing 
         Now Playing: #{@current_song[:title]} by #{@current_song[:artist]}  
-        |
-        %a{:href => '/get/' + @current_song[:id].to_s} Download
+        - if $CONFIG[:settings][:allow_downloads]
+          |
+          %a{:href => '/get/' + @current_song[:id].to_s} Download
         |
         Open 
         %a{:href => @tune_in_link} This Link

@@ -1,8 +1,9 @@
 %ul.song_list
   - @songs.each do |song|
     %li
-      %p{:id => song[:id].to_s + '_player', :style => 'visibility: hidden'}
-      %br
+      - if $CONFIG[:settings][:allow_downloads]
+        %p{:id => song[:id].to_s + '_player', :style => 'visibility: hidden'}
+        %br
       %a{:href => "/vote/#{song[:id]}"}= song[:title]
       %br
       %small
@@ -11,10 +12,10 @@
         %a{:href => '/year/' + escape(song[:year])}= song[:year]
         \-
         %a{:href => '/album/view/' + escape(song[:album])}= song[:album]
-        %br
-        %strong
-          Actions:
-        %a{:href => '/get/' + song[:id].to_s} Download
-        \-
-        %a{:href => '#' + song[:id].to_s, :class => 'player_link'} Preview
-  
+        - if $CONFIG[:settings][:allow_downloads]
+          %br
+          %strong
+            Actions:
+          %a{:href => '/get/' + song[:id].to_s} Download
+          \-
+          %a{:href => '#' + song[:id].to_s, :class => 'player_link'} Preview  

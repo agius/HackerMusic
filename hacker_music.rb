@@ -34,6 +34,20 @@ def filter_user
   end
 end
 
+def filter_uploads
+  if not $CONFIG[:settings][:allow_uploads]
+    session[:notice] = 'Uploads are not allowed on this server.'
+    redirect back 
+  end
+end
+
+def filter_downloads
+  if not $CONFIG[:settings][:allow_downloads]
+    session[:notice] = 'Downloads are not allowed on this server.'
+    redirect back 
+  end
+end
+
 helpers do
   include Rack::Utils
   alias_method :url, :escape
@@ -49,7 +63,9 @@ before do
   end
   @tune_in_link = "http://#{self.env['SERVER_NAME']}:#{$CONFIG[:shout_station][:port]}/#{$CONFIG[:shout_station][:mount]}"
   @styles = ['reset.css', 'hm.css']
-  @scripts = ['jquery-1.3.2.js', 'audio-player.js', 'hm.js']
+  @scripts = ['jquery-1.3.2.js']
+  @scripts << 'audio-player.js' if $CONFIG[:settings][:allow_downloads]
+  @scripts << 'hm.js'
 end
 
 get '/search' do
@@ -258,6 +274,7 @@ get '/upcoming' do
 end
 
 get '/get/:id' do
+  filter_downloads
   @song = $DB[:songs].filter(:id => params[:id]).first
   return if not @song
   mime :mp3, 'audio/mpeg'
@@ -266,6 +283,7 @@ end
 
 get '/upload' do
   filter_user
+  filter_uploads
   @scripts << 'swfobject.js' << 'jquery.uploadify.v2.1.0.min.js' << 'hm_upload.js'
   @styles << 'uploadify.css'
   haml :upload_form
@@ -277,6 +295,7 @@ post '/upload' do
   else
     filter_user
   end
+  filter_uploads
   
   @user = $DB[:users].filter(:id => @user).first
   uploads_dir = $CONFIG[:database][:music_dir] + '/uploads/' + @user[:name] + '/'

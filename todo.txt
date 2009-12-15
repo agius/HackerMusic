@@ -17,7 +17,8 @@
 * Artist / album links in song_list
 * give search page its own URL, screw AJAX (stop breaking the back button / redirects)
 * remove primitive shell scripts, update README to reflect default thin settings
-- make static site hackermusic.com to advertise the project (use webby?)
+* make static site hackermusic.com to advertise the project (use webby?)
+* Make upload / downloads / previews configurable
 
 IDEAS:
 - Logic to prevent multiple plays / day
@@ -26,7 +27,7 @@ IDEAS:
 - default playlist file instead of random selections
 * flash player to preview songs before voting
 * upload form / flash obj (for multiple, large uplaods) so people can drop in their own music
-- better security on uploading? random user ids?
+- better security on uploading? random user ids? upload key?
 * link to download songs / currently playing song
 - reports: most-played genres, participation ratios, etc
 - package into a gem?

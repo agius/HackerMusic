@@ -303,6 +303,7 @@ post '/upload' do
   
   dest = uploads_dir + params[:Filename]
   if FileUtils.mv(params[:Filedata][:tempfile].path, dest)
+    FileUtils.chmod 0755, dest
     indexer = HM_Indexer.new($DB)
     indexer.index(dest)
     session[:notice] = 'File uploaded: ' + params[:Filename]

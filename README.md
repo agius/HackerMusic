@@ -53,17 +53,7 @@ We set up Hacker Music on a mac laptop, so there will be a lot of references to 
 4.  Install Required Gems:
     Hacker Music uses a number of truly awesome tools the Ruby community has crafted. Here's the command list:
     
-    > gem install sqlite3-ruby
-    
-    > gem install sinatra-sinatra
-    
-    > gem install sequel
-    
-    > gem install haml
-    
-    > gem install ruby-shout
-    
-    > gem install thin
+    > gem install sqlite3-ruby sinatra sequel haml ruby-shout thin rtaglib
     
 5.  Once you're done installing all those dependancies (painless, right?), you're almost ready to rock! You will want to move the following files and update them to point to your application directory:
     

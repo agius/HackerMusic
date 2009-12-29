@@ -74,7 +74,9 @@ We set up Hacker Music on a mac laptop, so there will be a lot of references to 
     That should recursively index all the MP3's from the music directory specified in settings.yaml
     
     > icecast2 -b -c icecast.xml
+
     > thin -c config.yml -R rackup_hm.ru start
+
     > ruby streamer.rb >logs/streamer.log &
     
     This defaults to starting an icecast server in the background using icecast.xml in the application directory, and starting the Sinatra application using [Thin](http://code.macournoyer.com/thin/ "Thin Ruby Server"), and running streamer.rb in the background.

@@ -75,7 +75,7 @@ We set up Hacker Music on a mac laptop, so there will be a lot of references to 
     
     > icecast2 -b -c icecast.xml
 
-    > thin -c config.yml -R rackup_hm.ru start
+    > thin -C config.yml -R rackup_hm.ru start
 
     > ruby streamer.rb >logs/streamer.log &
     

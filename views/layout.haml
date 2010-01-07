@@ -47,7 +47,7 @@
       %h2#notice= @notice
     .search
       %form{:action => '/search', :id => 'search'}
-        %input{:type => 'text', :name => 'q', :id => 'q', :size => '71'}
+        %input{:type => 'text', :name => 'q', :id => 'q', :size => '71', :value => @q}
         %input{:type => 'submit', :value => 'Search', :id => 'searchbutton'}
     .browsing_links
       %p

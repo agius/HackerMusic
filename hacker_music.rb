@@ -69,7 +69,8 @@ before do
 end
 
 get '/search' do
-  @songs = $DB[:songs].grep([:title, :artist, :filename, :genre, :album], ["%#{params[:q]}%", {:case_insensitive => true}])
+  @q = params[:q]
+  @songs = $DB[:songs].grep([:title, :artist, :filename, :genre, :album], ["%#{@q}%", {:case_insensitive => true}])
   haml :song_list, :layout => !request.xhr?
 end
 

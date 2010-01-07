@@ -2,13 +2,21 @@ $(document).ready(function(){
   AudioPlayer.setup("/flash/player.swf", {  
     width: 290
   });
-  $('#q').val('Search by keyword...')
-  $('#q').bind('focus', function(){
-    if($('#q').val() == 'Search by keyword...') $('#q').val('')
-  });
-  $('#q').bind('blur', function(){
-    if($('#q').val() == '') $('#q').val('Search by keyword...')
-  });
+  // search label
+  var search_selector = '#q';
+  var search_text = "Search by keyword...";
+  if ($(search_selector).val() == "") $(search_selector).val(search_text);
+  $(search_selector).focus(function()
+    {
+      if ($(this).val() == search_text) {
+        $(this).val('');
+      }
+    }).blur(function()
+    {
+      if ($(this).val() == '') {
+        $(this).val(search_text);
+      }
+    });
   $('.player_link').each(function(i){
     $(this).bind('click', function(e){
         href = e.target.href

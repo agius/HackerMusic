@@ -32,7 +32,10 @@
             %a{:href => '/admin'} Admin
     - if(@current_song)
       %h2.now_playing 
-        Now Playing: #{@current_song[:title]} by #{@current_song[:artist]}  
+        Now Playing:  
+        %a{:href => '/album/view/' + escape(@current_song[:album])} #{@current_song[:title]} 
+        by 
+        %a{:href => '/artist/view/' + escape(@current_song[:artist])} #{@current_song[:artist]}  
         - if $CONFIG[:settings][:allow_downloads]
           |
           %a{:href => '/get/' + @current_song[:id].to_s} Download
@@ -61,16 +64,19 @@
         |
         %a{:href => '/random'} Random
         |
-        %a{:href => '/upcoming'} Upcoming
+        %a{:href => '/users'} Users
     .right
       %h2 Upcoming:
       %ul
         - @upcoming.each do |song|
           %li
             %a{:href => "/vote/#{song[:song_id]}"}= song[:title]
-            (#{song[:cnt]})
+            (#{song[:cnt]}) 
             %br
             %small= 'By: ' + song[:artist]
+            %br
+            %small= 'Voted by ' + 
+            %a{:href => "/user/#{song[:user_id]}"}= song[:name]
       - if @my_votes
         %h2 My Votes: (#{($CONFIG[:settings][:max_votes].to_i - @my_votes.count).to_s} left)
         %ul

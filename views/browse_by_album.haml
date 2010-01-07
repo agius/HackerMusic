@@ -1,9 +1,20 @@
 - if @album
-  %h2 Browsing #{@album}
+  %h2 Browsing #{@album} by
+  %ul.song_list
+    %li
+      %a{:href => '/voteforalbum/' + escape(@album)} Add Album
 - else
   %h2 Browsing By Album
-- @url = '/album/list'
-= haml :alphabet_list, :layout => false
+  - @url = '/album/list'
+  = haml :alphabet_list, :layout => false
+
+- if @albums
+  %ul.song_list
+    - @albums.each do |album|
+      %li
+        %a{:href => '/album/view/' + escape(album[:album])}= album[:album]
+        %small= album[:artist]
+
 - if @songs
   = haml :song_list, :layout => false
 - if @list

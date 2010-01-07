@@ -1,0 +1,7 @@
+%h2 Users
+
+%ul.song_list
+  - @users.each do |user|
+    %li
+      %a{:href => '/user/' + escape(user[:id])}= user[:name]
+

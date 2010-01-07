@@ -1,0 +1,15 @@
+%h2 #{@viewuser[:name]}
+
+%h2 Top 10 Tracks
+%ul.song_list
+  - @toptracks.each do |track|
+    %li
+      %a{:href => '/vote/' + escape(track[:id])}= track[:title]
+      (#{track[:cnt]})
+  
+%h2 Recent Votes
+
+- if @songs
+  = haml :song_list, :layout => false
+- else
+  %p No votes

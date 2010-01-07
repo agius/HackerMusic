@@ -57,7 +57,7 @@ before do
   @user = session[:id] if session[:id]
   @notice = session[:notice] if session[:notice] and !session[:notice].empty?
   @current_song = $DB[:plays].select(:song_id.as(:id), :title, :artist, :album, :genre, :year).join(:songs, :id => :song_id).order(:played_at.desc).first
-  @upcoming = $DB[:votes].group(:song_id).join(:songs, :id => :song_id).select(:song_id, :title, :artist, :COUNT.sql_function(:song_id).as(:cnt)).order(:cnt.desc, :voted_at.asc)
+  @upcoming = $DB[:users].join(:votes, :user_id => :id).join(:songs, :id => :song_id).group(:song_id).select(:song_id, :user_id, :name, :title, :artist, :COUNT.sql_function(:song_id).as(:cnt)).order(:cnt.desc, :voted_at.asc)
   if @user
     @my_votes = $DB[:votes].select({:votes__id => :vote_id}, :song_id, :user_id, :title, :artist, :album, :genre, :year).filter(:user_id => @user).join(:songs, :id => :song_id).all
   end
@@ -197,6 +197,7 @@ get '/title/:letter' do
 end
 
 get '/artist/list' do
+  @artists = $DB[:songs].group_by(:artist)
   haml :browse_by_artist
 end
 
@@ -204,16 +205,19 @@ get '/artist/list/:letter' do
   # Required for category_list.haml
   @field = :artist
   @list = $DB[:songs].grep([:artist], ["#{params[:letter]}%", {:case_insensitive => true}]).group_by(:artist)
+  #@list = $DB[:songs].grep([:artist], ["[0-9]%"]).group_by(:artist)
   haml :browse_by_artist
 end
 
 get '/artist/view/:artist' do
   @artist = params[:artist]
   @songs = $DB[:songs].grep([:artist], ["#{params[:artist]}", {:case_insensitive => true}])
+  @albums = $DB[:songs].grep([:artist], ["#{params[:artist]}", {:case_insensitive => true}]).group_by(:album)
   haml :browse_by_artist
 end
 
 get '/album/list' do
+  @albums = $DB[:songs].group_by(:album)
   haml :browse_by_album
 end
 
@@ -227,6 +231,33 @@ get '/album/view/:album' do
   @album = params[:album]
   @songs = $DB[:songs].grep([:album], ["#{params[:album]}", {:case_insensitive => true}])
   haml :browse_by_album
+end
+
+get '/voteforalbum/:album' do
+  @album = params[:album]
+  @songs = $DB[:songs].grep([:album], ["#{params[:album]}", {:case_insensitive => true}])
+  filter_user
+
+  for @song in @songs
+    @votecount = $DB[:votes].filter(:user_id => @user).join(:songs, :id => :song_id).all
+    @votes = $DB[:votes]
+
+     if @votecount.count >= $CONFIG[:settings][:max_votes].to_i
+      session[:notice] = 'You have used all your votes. Please clear some, then vote again.'
+      redirect back
+    end
+    check = $DB[:votes].filter(:song_id => params[:id], :user_id => @user).first
+    if check
+      session[:notice] = 'You have already voted for this song. Branch out!'
+      redirect back
+    end
+
+    vote_id = @votes.insert(:song_id => @song[:id], :user_id => @user, :voted_at => Time.now) if @song
+    @vote = @votes[:id => vote_id]
+  end
+
+  session[:notice] = 'You voted for: ' + @album
+  redirect back
 end
 
 get '/genre' do
@@ -273,6 +304,11 @@ get '/upcoming' do
   haml :browse_by_upcoming
 end
 
+get '/users' do
+  @users = $DB[:users]
+  haml :browse_by_users
+end
+
 get '/get/:id' do
   filter_downloads
   @song = $DB[:songs].filter(:id => params[:id]).first
@@ -314,6 +350,16 @@ post '/upload' do
   
   return 'true' if params[:user_id]
   redirect back
+end
+
+get '/user/:name' do
+  filter_user
+  
+  @name = params[:name]
+  @viewuser = $DB[:users].filter(:id => @name).first
+  @toptracks = $DB[:votes].select({:votes__id => :vote_id}, {:songs__id => :id}, :COUNT.sql_function(:song_id).as(:cnt), :song_id, :user_id, :track, :title, :artist, :album, :genre, :year).filter(:user_id => @name).group(:song_id).join(:songs, :id => :song_id).limit(10)
+  @songs = $DB[:votes_archives].select({:votes_archives__id => :vote_id}, {:songs__id => :id}, :song_id, :user_id, :track, :title, :artist, :album, :genre, :year).filter(:user_id => @name).join(:songs, :id => :song_id).all
+  haml :view_user
 end
 
 get '/' do

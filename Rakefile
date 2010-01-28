@@ -18,7 +18,7 @@ task :index do
   sh "ruby indexer.rb"
 end
 
-desc "Starting the webinterface."
+desc "Start the webinterface."
 task :wi_start do
   puts "Try to start the webinterface."
   begin
@@ -32,4 +32,10 @@ desc "Stop the webinterface"
 task :wi_stop do
   puts "Try to kill the thin server process."
   sh "pkill thin"
+end
+
+desc "Start icecast server"
+task :icecast_start do
+  puts "Start icecast server."
+  sh "icecast2 -b -c icecast.xml"
 end

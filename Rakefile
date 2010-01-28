@@ -40,8 +40,20 @@ task :icecast_start do
   sh "icecast2 -b -c icecast.xml"
 end
 
+desc "Stop the icecast server."
+task :icecast_stop do
+  puts "Stop the icecast server."
+  sh "pkill icecast"
+end
+
 desc "Start streamer."
 task :streamer_start do
   puts "Start streamer."
   sh "ruby streamer.rb >/tmp/streamer.log &"
+end
+
+desc "Stop streamer."
+task :streamer_stop do
+  puts "Stop streamer."
+  sh "pkill streamer.rb"
 end

@@ -1,3 +1,11 @@
+    /\ \/\ \                 /\ \                     /'\_/`\                  __           
+    \ \ \_\ \     __      ___\ \ \/'\      __   _ __ /\      \  __  __    ____/\_\    ___   
+     \ \  _  \  /'__`\   /'___\ \ , <    /'__`\/\`'__\ \ \__\ \/\ \/\ \  /',__\/\ \  /'___\ 
+      \ \ \ \ \/\ \L\.\_/\ \__/\ \ \\`\ /\  __/\ \ \/ \ \ \_/\ \ \ \_\ \/\__, `\ \ \/\ \__/ 
+       \ \_\ \_\ \__/.\_\ \____\\ \_\ \_\ \____\\ \_\  \ \_\\ \_\ \____/\/\____/\ \_\ \____\
+        \/_/\/_/\/__/\/_/\/____/ \/_/\/_/\/____/ \/_/   \/_/ \/_/\/___/  \/___/  \/_/\/____/
+
+
 Hacker Music
 ============
 Hacker Music is a stupidly simple web application designed to solve a bedeviling problem: what music should we be playing in the office right now? We wanted to use Apple's super-slick Itunes DJ / iTouch Remote combo, but not everyone in the office has an iTouch-ready device. We looked at [Tunez](http://tunez.sourceforge.net/ "Tunez MP3 Jukebox") which is an icecast interface with a voting system, but that looked like more bells and whistles than we needed.

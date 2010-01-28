@@ -28,14 +28,20 @@ task :wi_start do
   end
 end
 
-desc "Stop the webinterface"
+desc "Stop the webinterface."
 task :wi_stop do
   puts "Try to kill the thin server process."
   sh "pkill thin"
 end
 
-desc "Start icecast server"
+desc "Start icecast server."
 task :icecast_start do
   puts "Start icecast server."
   sh "icecast2 -b -c icecast.xml"
+end
+
+desc "Start streamer."
+task :streamer_start do
+  puts "Start streamer."
+  sh "ruby streamer.rb >/tmp/streamer.log &"
 end

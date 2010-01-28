@@ -31,6 +31,7 @@ end
 desc "Stop the webinterface."
 task :wi_stop do
   puts "Try to kill the thin server process."
+  # TODO: read thin pid from thin.pid file
   sh "pkill thin"
 end
 

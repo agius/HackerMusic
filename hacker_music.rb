@@ -267,7 +267,7 @@ get %r{/genre/(.*)} do |g|
 end
 
 get '/year' do
-  @tags = $DB[:songs].select(:COUNT.sql_function(:id).as(:cnt), :year).group_by(:year)
+  @tags = $DB[:songs].filter{|i| i.year > 0}.select(:COUNT.sql_function(:id).as(:cnt), :year).group_by(:year)
   # required for tag_cloud partial
   @max = @tags.order(:cnt.desc).first[:cnt].to_i
   @min = @tags.order(:cnt.asc).first[:cnt].to_i

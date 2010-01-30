@@ -1,7 +1,8 @@
 !!!
 %html
   %head
-    %title Hacker Music
+    %title
+      #{@title} : #{@current_song[:title]} by #{@current_song[:artist]}
     - @styles.each do |s|
       %link{:href => '/style/' + s, :rel => 'stylesheet', :type => 'text/css'}
     - @scripts.each do |s|
@@ -9,7 +10,7 @@
   %body
     #header
       %h1 
-        %a{:href => '/', :title => 'Hacker Music'} Hacker Music
+        %a{:href => '/', :title => 'Hacker Music'} #{@title}
       #controls
         - if(@user.nil?)
           %form{:action => '/login', :method => 'post'}

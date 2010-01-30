@@ -19,6 +19,7 @@
   :max_votes: 5
   :allow_downloads: true
   :allow_uploads: true
+  :title: 'Hacker Music'
 
 :users:
   :default_salt: default

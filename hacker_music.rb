@@ -66,6 +66,7 @@ before do
   @scripts = ['jquery-1.3.2.js']
   @scripts << 'audio-player.js' if $CONFIG[:settings][:allow_downloads]
   @scripts << 'hm.js'
+  @title = $CONFIG[:settings][:title]
 end
 
 get '/search' do

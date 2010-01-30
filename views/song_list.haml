@@ -8,8 +8,9 @@
       %br
       %small
         %a{:href => '/artist/view/' + escape(song[:artist])}=  song[:artist]
-        \-
-        %a{:href => '/year/' + escape(song[:year])}= song[:year]
+        - if song[:year].to_i > 0
+          \-
+          %a{:href => '/year/' + escape(song[:year])}= song[:year]
         \-
         %a{:href => '/album/view/' + escape(song[:album])}= song[:album]
         - if $CONFIG[:settings][:allow_downloads]

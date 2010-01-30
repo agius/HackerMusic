@@ -277,7 +277,7 @@ get '/year' do
   haml :browse_by_year
 end
 
-get %r{/year/(.*)} do |y|
+get %r{/year/([\d]{4})} do |y|
   @year = unescape y
   @songs = $DB[:songs].grep([:year], ["#{@year}%", {:case_insensitive => true}])
   haml :browse_by_year

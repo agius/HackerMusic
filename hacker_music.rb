@@ -63,9 +63,8 @@ before do
   end
   @tune_in_link = "http://#{self.env['SERVER_NAME']}:#{$CONFIG[:shout_station][:port]}/#{$CONFIG[:shout_station][:mount]}"
   @styles = ['reset.css', 'hm.css']
-  @scripts = ['jquery-1.3.2.js']
+  @scripts = ['jquery-1.3.2.js', 'hm.js']
   @scripts << 'audio-player.js' if $CONFIG[:settings][:allow_downloads]
-  @scripts << 'hm.js'
   @title = $CONFIG[:settings][:title]
 end
 

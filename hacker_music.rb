@@ -69,6 +69,17 @@ before do
   @title = $CONFIG[:settings][:title]
 end
 
+def alphabet_list(k)
+  songs = $DB[:songs].map{|i| i[k.to_sym][0,1].downcase}
+  l = []
+  ('a'..'z').each do |i|
+    l <<  { :letter => i, 
+            :have_songs => (songs.include?(i)) 
+          }
+  end
+  return l
+end
+
 get '/search' do
   @q = params[:q]
   @songs = $DB[:songs].grep([:title, :artist, :filename, :genre, :album], ["%#{@q}%", {:case_insensitive => true}])
@@ -190,42 +201,50 @@ get '/admin/user/:name/delete' do
 end
 
 get '/title' do
+  @alphabet_list = alphabet_list :title
   haml :browse_by_title
 end
 
 get '/title/:letter' do
+  @alphabet_list = alphabet_list :title
   @songs = $DB[:songs].grep([:title], ["#{params[:letter]}%", {:case_insensitive => true}])
   haml :browse_by_title
 end
 
 get '/artist/list' do
+  @alphabet_list = alphabet_list :artist
   haml :browse_by_artist
 end
 
 get '/artist/list/:letter' do
   # Required for category_list.haml
+  @alphabet_list = alphabet_list :artist
   @field = :artist
   @list = $DB[:songs].grep([:artist], ["#{params[:letter]}%", {:case_insensitive => true}]).group_by(:artist)
   haml :browse_by_artist
 end
 
 get '/artist/view/:artist' do
+  @alphabet_list = alphabet_list :artist
   @artist = params[:artist]
   @songs = $DB[:songs].grep([:artist], ["#{params[:artist]}", {:case_insensitive => true}])
   haml :browse_by_artist
 end
 
 get '/album/list' do
+  @alphabet_list = alphabet_list :album
   haml :browse_by_album
 end
 
 get '/album/list/:letter' do
+  @alphabet_list = alphabet_list :album
   @field = :album
   @list = $DB[:songs].grep([:album], ["#{params[:letter]}%", {:case_insensitive => true}]).group_by(:album)
   haml :browse_by_album
 end
 
 get '/album/view/:album' do
+  @alphabet_list = alphabet_list :album
   @album = params[:album]
   @songs = $DB[:songs].grep([:album], ["#{params[:album]}", {:case_insensitive => true}])
   haml :browse_by_album

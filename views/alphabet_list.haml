@@ -1,3 +1,6 @@
 .alphabet_list
-  - ('A'..'Z').each do |i|
-    %a{:href => @url + '/' + i}= i
+  - @alphabet_list.each do |i|
+    - if i[:have_songs]
+      %a{:href => @url + '/' + i[:letter].to_s}= i[:letter]
+    - else
+      = i[:letter]

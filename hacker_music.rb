@@ -340,3 +340,8 @@ get '/' do
   @songs = $DB[:plays].join(:songs, :id => :song_id).group(:song_id).order(:played_at.desc).limit(10)
   haml :index
 end
+
+get '/now_playing' do
+  @current_song = $DB[:plays].select(:song_id.as(:id), :title, :artist, :album, :genre, :year).join(:songs, :id => :song_id).order(:played_at.desc).first
+  "#{@current_song[:title]} by #{@current_song[:artist]}"
+end

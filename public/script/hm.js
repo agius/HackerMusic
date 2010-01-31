@@ -2,6 +2,25 @@ $(document).ready(function(){
   AudioPlayer.setup("/flash/player.swf", {  
     width: 290
   });
+  // current playing update
+  function update() {
+    //$("#now_playing").html('Loading..'); 
+    $.ajax({
+      type: 'GET',
+      url: '/now_playing',
+      timeout: 2000,
+      success: function(data) {
+        $("#now_playing").html("Now playing: "+data);
+        document.title = "Now playing: "+data;
+        window.setTimeout(update, 30000);
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        $("#now_playing").html('Timeout contacting server..');
+        window.setTimeout(update, 60000);
+      }
+    });
+  }
+  update();
   // search label
   var search_selector = '#q';
   var search_text = "Search by keyword...";

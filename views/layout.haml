@@ -33,7 +33,7 @@
             %a{:href => '/admin'} Admin
     - if(@current_song)
       %h2.now_playing 
-        Now Playing: #{@current_song[:title]} by #{@current_song[:artist]}  
+        #now_playing
         - if $CONFIG[:settings][:allow_downloads]
           |
           %a{:href => '/get/' + @current_song[:id].to_s} Download

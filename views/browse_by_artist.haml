@@ -4,7 +4,19 @@
   %h2 Browsing By Artist
 - @url = '/artist/list'
 = haml :alphabet_list, :layout => false
+- if @artists
+  %ul.song_list
+    - @artists.each do |artist|
+      %li
+        %a{:href => '/artist/view/' + escape(artist[:artist])}= artist[:artist]
+- if @albums
+  %h2 Albums
+  %ul.song_list
+    - @albums.each do |album|
+      %li
+        %a{:href => '/album/view/' + escape(album[:album])}= album[:album]
 - if @songs
+  %h2 Songs
   = haml :song_list, :layout => false
 - if @list
   - @url = '/artist/view'

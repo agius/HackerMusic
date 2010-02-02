@@ -62,16 +62,19 @@
         |
         %a{:href => '/random'} Random
         |
-        %a{:href => '/upcoming'} Upcoming
+        %a{:href => '/users'} Users
     .right
       %h2 Upcoming:
       %ul
         - @upcoming.each do |song|
           %li
             %a{:href => "/vote/#{song[:song_id]}"}= song[:title]
-            (#{song[:cnt]})
+            (#{song[:cnt]}) 
             %br
             %small= 'By: ' + song[:artist]
+            %br
+            %small= 'Voted by ' + 
+            %a{:href => "/user/#{song[:user_id]}"}= song[:name]
       - if @my_votes
         %h2 My Votes: (#{($CONFIG[:settings][:max_votes].to_i - @my_votes.count).to_s} left)
         %ul

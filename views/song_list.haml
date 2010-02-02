@@ -4,7 +4,7 @@
       - if $CONFIG[:settings][:allow_downloads]
         %p{:id => song[:id].to_s + '_player', :style => 'visibility: hidden'}
         %br
-      %a{:href => "/vote/#{song[:id]}"}= song[:title]
+      %a{:href => "/vote/#{song[:id]}"}= song[:track] + '. ' + song[:title] 
       %br
       %small
         %a{:href => '/artist/view/' + escape(song[:artist])}=  song[:artist]
